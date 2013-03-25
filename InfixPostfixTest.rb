@@ -1,6 +1,6 @@
+#!/usr/bin/ruby
 require "test/unit"
 require "./InfixPostfix.rb"
-
 #
 # Unit test cases for infixToPostfix() and evaluatePostfix() methods of InfixPostfix class
 #
