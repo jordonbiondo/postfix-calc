@@ -23,7 +23,6 @@ class InfixPostfix
   def infixToPostfix(exprStr)
     expression = []
     stack = []
-    move = Proc.new { expression.push stack.pop }
     exprStr.split(/\s+|\b/).each do |token|
       if operand? token then
         expression.push token
