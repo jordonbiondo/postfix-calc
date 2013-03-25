@@ -9,12 +9,12 @@ class InfixPostfix
   def initialize
 
     @operators = {
-      "+" => { :input_prec => 1, :stack_prec => 1, :action => Proc.new{|x,y| y+x}},
-      "-" => { :input_prec => 1, :stack_prec => 1, :action => Proc.new{|x,y| y-x}},
-      "*" => { :input_prec => 2, :stack_prec => 2, :action => Proc.new{|x,y| y*x}},
-      "/" => { :input_prec => 2, :stack_prec => 2, :action => Proc.new{|x,y| (y/x).to_i}},
-      "%" => { :input_prec => 2, :stack_prec => 2, :action => Proc.new{|x,y| y%x}},
-      "^" => { :input_prec => 4, :stack_prec => 3, :action => Proc.new{|x,y| y**x}},
+      "+" => { :input_prec => 1, :stack_prec => 1, :action => Proc.new{|x,y| x+y}},
+      "-" => { :input_prec => 1, :stack_prec => 1, :action => Proc.new{|x,y| x-y}},
+      "*" => { :input_prec => 2, :stack_prec => 2, :action => Proc.new{|x,y| x*y}},
+      "/" => { :input_prec => 2, :stack_prec => 2, :action => Proc.new{|x,y| (x/y).to_i}},
+      "%" => { :input_prec => 2, :stack_prec => 2, :action => Proc.new{|x,y| x%y}},
+      "^" => { :input_prec => 4, :stack_prec => 3, :action => Proc.new{|x,y| x**y}},
       "(" => { :input_prec => 5, :stack_prec => -1, :action => NIL}
     }
   end
@@ -23,6 +23,7 @@ class InfixPostfix
   def infixToPostfix(exprStr)
     expression = []
     stack = []
+    move = Proc.new { expression.push stack.pop }
     exprStr.split(/\s+|\b/).each do |token|
       if operand? token then
         expression.push token
@@ -65,8 +66,7 @@ class InfixPostfix
       elsif operator? token then
         y = stack.pop
         x = stack.pop
-        v = applyOperator(y, x, token)
-        stack.push v
+        stack.push applyOperator(x, y, token)
       end
     end
     stack.pop
