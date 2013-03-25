@@ -9,13 +9,34 @@ class InfixPostfix
   def initialize
 
     @operators = {
-      "+" => { :input_prec => 1, :stack_prec => 1, :action => Proc.new{|x,y| x+y}},
-      "-" => { :input_prec => 1, :stack_prec => 1, :action => Proc.new{|x,y| x-y}},
-      "*" => { :input_prec => 2, :stack_prec => 2, :action => Proc.new{|x,y| x*y}},
-      "/" => { :input_prec => 2, :stack_prec => 2, :action => Proc.new{|x,y| (x/y).to_i}},
-      "%" => { :input_prec => 2, :stack_prec => 2, :action => Proc.new{|x,y| x%y}},
-      "^" => { :input_prec => 4, :stack_prec => 3, :action => Proc.new{|x,y| x**y}},
-      "(" => { :input_prec => 5, :stack_prec => -1, :action => NIL}
+      "+" => {
+        :input_prec => 1,
+        :stack_prec => 1,
+        :action => Proc.new{|x,y| x+y}},
+      "-" => {
+        :input_prec => 1,
+        :stack_prec => 1,
+        :action => Proc.new{|x,y| x-y}},
+      "*" => {
+        :input_prec => 2,
+        :stack_prec => 2,
+        :action => Proc.new{|x,y| x*y}},
+      "/" => {
+        :input_prec => 2,
+        :stack_prec => 2,
+        :action => Proc.new{|x,y| (x/y).to_i}},
+      "%" => {
+        :input_prec => 2,
+        :stack_prec => 2,
+        :action => Proc.new{|x,y| x%y}},
+      "^" => {
+        :input_prec => 4,
+        :stack_prec => 3,
+        :action => Proc.new{|x,y| x**y}},
+      "(" => {
+        :input_prec => 5,
+        :stack_prec => -1,
+        :action => NIL}
     }
   end
 
