@@ -6,6 +6,8 @@ class InfixPostfix
 
   attr_reader :operators
 
+  public
+
   def initialize
 
     @operators = {
@@ -46,21 +48,15 @@ class InfixPostfix
     stack = []
     exprStr.split(/\s+|\b/).each do |token|
       if operand? token then
-        expression.push token
-
+        expression.push token if operand? token
       elsif leftParen? token then
         stack.push token
-
       elsif operator? token then
         while operator? stack.last
-          if @operators[stack.last][:stack_prec] >= @operators[token][:input_prec]
-            expression.push stack.pop
-          else
-            break
-          end
+          break if @operators[stack.last][:stack_prec] < @operators[token][:input_prec]
+          expression.push stack.pop
         end
         stack.push token
-
       elsif rightParen? token then
         while operator? stack.last
           if not leftParen? stack.last
@@ -71,9 +67,8 @@ class InfixPostfix
           end
         end
       end
-
     end
-    stack.reverse.each { |x| expression.push x}
+    stack.reverse.each {|x| expression.push x}
     expression.join(" ")
   end
 
@@ -101,7 +96,8 @@ class InfixPostfix
 
   # returns true if the input is an operand and false otherwise
   def operand?(str)
-    str == str.to_i.to_s
+    #true if str contains only [0-9]
+    0 == (str =~ /^\d+$/)
   end
 
   # returns true if the input is a left parenthesis and false otherwise
@@ -116,12 +112,12 @@ class InfixPostfix
 
   # returns the stack precedence of the input operator
   def stackPrecedence(operator)
-    return @operaters[operator][:stack_prec]
+    @operaters[operator][:stack_prec]
   end
 
   # returns the input precedence of the input operator
   def inputPrecedence(operator)
-    return @operaters[operator][:input_prec]
+    @operaters[operator][:input_prec]
   end
 
   # applies the operators to num1 and num2 and returns the result
