@@ -9,7 +9,6 @@ class InfixPostfix
   public
 
   def initialize
-
     @operators = {
       "+" => {
         :input_prec => 1,
@@ -122,6 +121,7 @@ class InfixPostfix
 
   # applies the operators to num1 and num2 and returns the result
   def applyOperator(num1, num2, operator)
+    #eval((num1.to_s + operator + num2.to_s).gsub("^", "**"))
     @operators[operator][:action].call(num1.to_i, num2.to_i)
   end
 
